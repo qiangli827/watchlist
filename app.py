@@ -34,9 +34,10 @@ def initdb(drop):
 @app.cli.command()
 def forge():
     """Generate fake data."""
+    db.drop_all()
     db.create_all()
 
-    name = 'Grey Li'
+    name = 'Qiang Li'
     movies = [
         {'title': 'My Neighbor Totoro', 'year': '1988'},
         {'title': 'Dead Poets Society', 'year': '1989'},
@@ -70,12 +71,20 @@ class Movie(db.Model):
     year = db.Column(db.String(4))
 
 
+@app.context_processor
+def inject_user():
+    user = User.query.first()
+    return dict(user=user)
+
 
 @app.route('/')
 def index():
-    user = User.query.first()
     movies = Movie.query.all()
-    return render_template('index.html', user=user, movies=movies)
+    return render_template('index.html', movies=movies)
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
 @app.route('/user/<name>')
 def user_page(name):
