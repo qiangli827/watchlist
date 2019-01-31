@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h3>edit the item</h3>
+<form method="post">
+  name <input type="text" name="title" autocomplete="off" required value="{{ movie.title }}">
+  year <input type="text" name="year" autocomplete="off" required value="{{ movie.year }}">
+  <input class="btn" type="submit" name="submit" value="更新">
+</form>
+{% endblock %}
