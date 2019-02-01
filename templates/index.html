@@ -4,24 +4,28 @@
 
 <p>{{ movies|length }} Titles</p>
 
-{# 添加的表单 #}
-<form method="post">
-  name <input type="text" name="title" autocomplete="off" required>
-  year <input type="text" name="year" autocomplete="off" required>
-  <input class="btn" type="submit" name="submit" value="添加">
-</form>
+{%if current_user.is_authenticated%}
+  {# 添加的表单 #}
+  <form method="post">
+    name <input type="text" name="title" autocomplete="off" required>
+    year <input type="text" name="year" autocomplete="off" required>
+    <input class="btn" type="submit" name="submit" value="添加">
+  </form>
+{%endif%}
 
 {# 电影清单 #}
 <ul class="movie-list">
   {% for movie in movies %}
   <li>{{ movie.title }} - {{ movie.year }}
     <span class="float-right">
-      {# 编辑按钮 #}
-      <a class="btn" href="{{ url_for('edit', movie_id=movie.id) }}">edit</a>
-      {# 删除按钮 #}
-      <form class="inline-form" action="{{ url_for('delete', movie_id=movie.id) }}" method="post">
-        <input class="btn" type="submit" name="delete" value="delete" onclick="return confirm('are you sure?')">
-      </form>
+      {%if current_user.is_authenticated%}
+        {# 编辑按钮 #}
+        <a class="btn" href="{{ url_for('edit', movie_id=movie.id) }}">edit</a>
+        {# 删除按钮 #}
+        <form class="inline-form" action="{{ url_for('delete', movie_id=movie.id) }}" method="post">
+          <input class="btn" type="submit" name="delete" value="delete" onclick="return confirm('are you sure?')">
+        </form>
+      {%endif%}
       {# 到豆瓣查询按钮 #}
       <a class="imdb" href="https://movie.douban.com/subject_search?search_text={{ movie.title }}" target="_blank" title="在豆瓣上搜索">豆瓣</a>
     </span>
