@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import click
-from watchlist import add, db
+from watchlist import app, db
 from watchlist.models import User, Movie
 
 # command
